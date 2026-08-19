@@ -1,14 +1,13 @@
 package com.wms.controller;
 
 import com.wms.common.ApiResponse;
+import com.wms.common.PageResult;
 import com.wms.dto.InboundOrderCreateRequest;
 import com.wms.dto.InventoryResponse;
 import com.wms.service.InventoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * ============================================
@@ -41,7 +40,7 @@ public class InventoryController {
      * 库存查询 — 候选人实现
      */
     @GetMapping("/inventory")
-    public ApiResponse<List<InventoryResponse>> queryInventory(
+    public ApiResponse<PageResult<InventoryResponse>> queryInventory(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Long warehouseId,
             @RequestParam(defaultValue = "1") int page,

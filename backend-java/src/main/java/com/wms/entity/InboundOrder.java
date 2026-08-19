@@ -35,8 +35,9 @@ public class InboundOrder {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // 候选人在实现时可按需处理明细关联
-    // @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<InboundOrderItem> items = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

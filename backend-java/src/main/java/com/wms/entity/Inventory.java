@@ -26,8 +26,16 @@ public class Inventory {
     @Column(name = "product_id", nullable = false)
     private Long productId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product;
+
     @Column(name = "location_code", nullable = false, length = 50)
     private String locationCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_code", referencedColumnName = "code", insertable = false, updatable = false)
+    private Location location;
 
     @Column(nullable = false)
     @Builder.Default

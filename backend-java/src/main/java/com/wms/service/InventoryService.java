@@ -2,6 +2,7 @@ package com.wms.service;
 
 import com.wms.dto.InboundOrderCreateRequest;
 import com.wms.dto.InventoryResponse;
+import com.wms.common.PageResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -52,8 +53,8 @@ public class InventoryService {
     /**
      * 库存查询 — 候选人实现
      */
-    public List<InventoryResponse> queryInventory(String keyword, Long warehouseId,
-                                                   int page, int pageSize) {
+    public PageResult<InventoryResponse> queryInventory(String keyword, Long warehouseId,
+                                                         int page, int pageSize) {
         // TODO: 候选人实现
         throw new UnsupportedOperationException("请实现库存查询功能（任务2）");
     }

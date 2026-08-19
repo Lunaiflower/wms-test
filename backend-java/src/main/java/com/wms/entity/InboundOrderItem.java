@@ -21,8 +21,16 @@ public class InboundOrderItem {
     @Column(name = "order_id", nullable = false)
     private Long orderId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    private InboundOrder order;
+
     @Column(name = "product_id", nullable = false)
     private Long productId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product;
 
     @Column(nullable = false)
     private Integer quantity;
