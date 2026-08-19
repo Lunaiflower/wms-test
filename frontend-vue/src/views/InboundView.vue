@@ -68,6 +68,6 @@ const handleSubmit = async () => {
       提交入库单
     </el-button>
 
-    <el-empty v-if="items.length === 0" description="请点击"添加明细"按钮添加入库商品" />
+    <el-empty v-if="items.length === 0" description="请点击“添加明细”按钮添加入库商品" />
   </div>
 </template>
