@@ -64,7 +64,8 @@ const handleEdit = (product: Product) => {
 // 提交
 const handleSubmit = async () => {
   try {
-    if (form.value.id) {
+    const isEditing = Boolean(form.value.id)
+    if (isEditing) {
       await updateProduct(form.value.id, { name: form.value.name, unit: form.value.unit })
       ElMessage.success('更新成功')
     } else {
@@ -72,8 +73,8 @@ const handleSubmit = async () => {
       ElMessage.success('创建成功')
     }
     dialogVisible.value = false
-    // ️ BUG: 编辑后不保留当前页码
-    currentPage.value = 1
+    // 新增后显示新列表；编辑时保留用户当前所在页。
+    if (!isEditing) currentPage.value = 1
     await loadProducts()
   } catch (e: any) {
     ElMessage.error(e.response?.data?.message || '操作失败')
