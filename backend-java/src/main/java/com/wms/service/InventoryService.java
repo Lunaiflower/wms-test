@@ -13,13 +13,18 @@ import com.wms.entity.Inventory;
 import com.wms.entity.Product;
 import com.wms.repository.InboundOrderItemRepository;
 import com.wms.repository.InboundOrderRepository;
+import com.wms.repository.InventoryProjection;
 import com.wms.repository.InventoryRepository;
 import com.wms.repository.LocationRepository;
 import com.wms.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -147,9 +152,30 @@ public class InventoryService {
     /**
      * 库存查询 — 候选人实现
      */
+    @Transactional(readOnly = true)
     public PageResult<InventoryResponse> queryInventory(String keyword, Long warehouseId,
                                                          int page, int pageSize) {
-        // TODO: 候选人实现
-        throw new UnsupportedOperationException("请实现库存查询功能（任务2）");
+        String normalizedKeyword = StringUtils.hasText(keyword) ? keyword.trim() : null;
+        Page<InventoryProjection> inventoryPage = inventoryRepository.searchInventory(
+                normalizedKeyword,
+                warehouseId,
+                PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "updatedAt")));
+
+        List<InventoryResponse> records = inventoryPage.getContent().stream()
+                .map(this::toInventoryResponse)
+                .toList();
+        return new PageResult<>(records, inventoryPage.getTotalElements(), page, pageSize);
+    }
+
+    private InventoryResponse toInventoryResponse(InventoryProjection projection) {
+        return InventoryResponse.builder()
+                .productId(projection.getProductId())
+                .productName(projection.getProductName())
+                .sku(projection.getSku())
+                .locationCode(projection.getLocationCode())
+                .warehouseName(projection.getWarehouseName())
+                .quantity(projection.getQuantity())
+                .updatedAt(projection.getUpdatedAt())
+                .build();
     }
 }
