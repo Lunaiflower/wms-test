@@ -3,10 +3,13 @@ package com.wms.controller;
 import com.wms.common.ApiResponse;
 import com.wms.common.PageResult;
 import com.wms.dto.InboundOrderCreateRequest;
+import com.wms.dto.InboundOrderResponse;
 import com.wms.dto.InventoryResponse;
 import com.wms.service.InventoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -31,9 +34,11 @@ public class InventoryController {
      * 创建入库单 — 候选人实现
      */
     @PostMapping("/inbound-orders")
-    public ApiResponse<?> createInboundOrder(@Valid @RequestBody InboundOrderCreateRequest request) {
-        // TODO: 调用 inventoryService.createInboundOrder(request)
-        return ApiResponse.error(501, "请实现入库单创建功能（任务1）");
+    public ResponseEntity<ApiResponse<InboundOrderResponse>> createInboundOrder(
+            @Valid @RequestBody InboundOrderCreateRequest request) {
+        InboundOrderResponse response = inventoryService.createInboundOrder(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(HttpStatus.CREATED.value(), "入库单创建成功", response));
     }
 
     /**
