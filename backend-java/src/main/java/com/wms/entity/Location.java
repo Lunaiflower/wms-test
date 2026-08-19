@@ -1,5 +1,6 @@
 package com.wms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class Location {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id", insertable = false, updatable = false)
+    @JsonIgnore
     private Warehouse warehouse;
 
     @Column(nullable = false, unique = true, length = 50)
